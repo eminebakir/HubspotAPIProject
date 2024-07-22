@@ -1,8 +1,7 @@
-﻿using HubspotDemoProject.Services;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-namespace HubspotDemoProject
+namespace HubspotDemoProject.Services
 {
     public class ConfigureServices
     {
@@ -19,15 +18,15 @@ namespace HubspotDemoProject
             // Configure services
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddLogging(configure => configure.AddConsole());
-            
-            serviceCollection.AddTransient<ContactServices>(provider =>
-               new ContactServices(configuration, provider.GetService<ILogger<ContactServices>>()));
 
-            serviceCollection.AddTransient<CompanyServices>(provider =>
-               new CompanyServices(configuration, provider.GetService<ILogger<CompanyServices>>()));
+            serviceCollection.AddTransient(provider =>
+               new ContactService(configuration, provider.GetService<ILogger<ContactService>>()));
 
-            serviceCollection.AddTransient<DealServices>(provider =>
-               new DealServices(configuration, provider.GetService<ILogger<DealServices>>()));
+            serviceCollection.AddTransient(provider =>
+               new CompanyService(configuration, provider.GetService<ILogger<CompanyService>>()));
+
+            serviceCollection.AddTransient(provider =>
+               new DealService(configuration, provider.GetService<ILogger<DealService>>()));
 
             return serviceCollection.BuildServiceProvider();
         }

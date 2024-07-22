@@ -1,13 +1,12 @@
-﻿
-
+﻿using HubspotDemoProject.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace HubspotDemoProject.Services
 {
-    public class ContactServices : GenericService<Contact>
+    public class ContactService : GenericService<Contact>
     {
-        public ContactServices(IConfiguration configuration, ILogger<ContactServices> logger)
+        public ContactService(IConfiguration configuration, ILogger<ContactService> logger)
             : base(configuration, logger, "contacts")
         {
         }

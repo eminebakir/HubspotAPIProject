@@ -2,7 +2,7 @@
 
 
 
-using HubspotDemoProject;
+using HubspotDemoProject.Models;
 using HubspotDemoProject.Test;
 
 #region Contact
@@ -10,36 +10,36 @@ using HubspotDemoProject.Test;
 // Get all contacts
 await ContactServiceTests.TestGetAllContacts();
 
-//Get contact by ID
-var contactid = 23074803442;
-await ContactServiceTests.TestGetContactById(contactid);
+////Get contact by ID
+//var contactid = 23074803442;
+//await ContactServiceTests.TestGetContactById(contactid);
 
-//Create a contact
-var newContact = new Contact
-{
-    Properties = new ContactProperties
-    {
-        FirstName = "*****",
-        LastName = "******",
+////Create a contact
+//var newContact = new Contact
+//{
+//    Properties = new ContactProperties
+//    {
+//        FirstName = "*****",
+//        LastName = "******",
 
-    }
-};
-await ContactServiceTests.TestCreateContact(newContact);
+//    }
+//};
+//await ContactServiceTests.TestCreateContact(newContact);
 
-//Update contact
-var updatedcontactID = 23603652806;
-var updatedContact = new Contact
-{
-    Properties = new ContactProperties
-    {
-        FirstName = "*****",
-        LastName = "******",
+////Update contact
+//var updatedcontactID = 23603652806;
+//var updatedContact = new Contact
+//{
+//    Properties = new ContactProperties
+//    {
+//        FirstName = "*****",
+//        LastName = "******",
 
-    }
-};
-await ContactServiceTests.TestUpdateContact(updatedcontactID, updatedContact);
+//    }
+//};
+//await ContactServiceTests.TestUpdateContact(updatedcontactID, updatedContact);
 
-//Delete a contact
-var contactID = 23074803442;
-await ContactServiceTests.TestDeleteContact(contactID);
+////Delete a contact
+//var contactID = 23074803442;
+//await ContactServiceTests.TestDeleteContact(contactID);
 #endregion

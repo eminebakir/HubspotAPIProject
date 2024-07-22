@@ -1,11 +1,7 @@
 ﻿using HubspotDemoProject.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HubspotDemoProject.Models;
 
 namespace HubspotDemoProject.Test
 {
@@ -14,7 +10,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestGetAllDeals()
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var dealService = serviceProvider.GetRequiredService<DealServices>();
+            var dealService = serviceProvider.GetRequiredService<DealService>();
 
             Console.WriteLine("Testing DealService - GetAll...");
             var apiResponse = await dealService.GetAllEntitiesAsync();
@@ -32,7 +28,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestGetDealById(long dealId)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var dealService = serviceProvider.GetRequiredService<DealServices>();
+            var dealService = serviceProvider.GetRequiredService<DealService>();
 
             Console.WriteLine("Testing DealService - GetById...");
             var dealDetail = await dealService.GetEntityByIdAsync(dealId);
@@ -45,7 +41,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestCreateDeal(Deal newDeal)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var dealService = serviceProvider.GetRequiredService<DealServices>();
+            var dealService = serviceProvider.GetRequiredService<DealService>();
 
             Console.WriteLine("Testing DealService - Create...");
             
@@ -58,7 +54,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestDeleteDeal(long dealId)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var dealService = serviceProvider.GetRequiredService<DealServices>();
+            var dealService = serviceProvider.GetRequiredService<DealService>();
 
             Console.WriteLine("Testing DealService - Delete...");
             var result = await dealService.DeleteEntityAsync(dealId);
@@ -76,7 +72,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestUpdateDeal(long dealId, Deal updatedDeal)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var dealService = serviceProvider.GetRequiredService<DealServices>();
+            var dealService = serviceProvider.GetRequiredService<DealService>();
 
             Console.WriteLine("Testing DealService - Update...");
             var updatedEntity = await dealService.UpdateEntityAsync(dealId, updatedDeal);

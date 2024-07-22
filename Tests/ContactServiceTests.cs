@@ -1,6 +1,7 @@
 ﻿using HubspotDemoProject.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using HubspotDemoProject.Models;
 
 namespace HubspotDemoProject.Test
 {
@@ -9,7 +10,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestGetAllContacts()
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var contactService = serviceProvider.GetRequiredService<ContactServices>();
+            var contactService = serviceProvider.GetRequiredService<ContactService>();
 
             Console.WriteLine("Testing ContactService - GetAll...");
             var apiResponse = await contactService.GetAllEntitiesAsync();
@@ -27,7 +28,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestGetContactById(long contactId)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var contactService = serviceProvider.GetRequiredService<ContactServices>();
+            var contactService = serviceProvider.GetRequiredService<ContactService>();
 
             Console.WriteLine("Testing ContactService - GetById...");
             var contactDetail = await contactService.GetEntityByIdAsync(contactId);
@@ -41,7 +42,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestCreateContact(Contact newContact)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var contactService = serviceProvider.GetRequiredService<ContactServices>();
+            var contactService = serviceProvider.GetRequiredService<ContactService>();
 
             Console.WriteLine("Testing ContactService - Create...");
 
@@ -52,7 +53,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestDeleteContact(long contactId)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var contactService = serviceProvider.GetRequiredService<ContactServices>();
+            var contactService = serviceProvider.GetRequiredService<ContactService>();
 
             Console.WriteLine("Testing ContactService - Delete...");
             var result = await contactService.DeleteEntityAsync(contactId);
@@ -69,7 +70,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestUpdateContact(long contactId, Contact updatedContact)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var contactService = serviceProvider.GetRequiredService<ContactServices>();
+            var contactService = serviceProvider.GetRequiredService<ContactService>();
 
             Console.WriteLine("Testing ContactService - Update...");
             var updatedEntity = await contactService.UpdateEntityAsync(contactId, updatedContact);

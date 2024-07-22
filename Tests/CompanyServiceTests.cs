@@ -1,11 +1,7 @@
 ﻿using HubspotDemoProject.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HubspotDemoProject.Models;
 
 namespace HubspotDemoProject.Test
 {
@@ -14,7 +10,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestGetAllCompanies()
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var companyService = serviceProvider.GetRequiredService<CompanyServices>();
+            var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
             Console.WriteLine("Testing CompanyService - GetAll...");
             var apiResponse = await companyService.GetAllEntitiesAsync();
@@ -31,7 +27,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestGetCompanyById(long companyId)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var companyService = serviceProvider.GetRequiredService<CompanyServices>();
+            var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
             Console.WriteLine("Testing CompanyService - GetById...");
             var companyDetail = await companyService.GetEntityByIdAsync(companyId);
@@ -43,7 +39,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestCreateCompany(Company newCompany)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var companyService = serviceProvider.GetRequiredService<CompanyServices>();
+            var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
             Console.WriteLine("Testing CompanyService - Create...");
 
@@ -55,7 +51,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestDeleteCompany(long companyId)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var companyService = serviceProvider.GetRequiredService<CompanyServices>();
+            var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
             Console.WriteLine("Testing CompanyService - Delete...");
             var result = await companyService.DeleteEntityAsync(companyId);
@@ -73,7 +69,7 @@ namespace HubspotDemoProject.Test
         public static async Task TestUpdateCompany(long companyId, Company updatedCompany)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
-            var companyService = serviceProvider.GetRequiredService<CompanyServices>();
+            var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
             Console.WriteLine("Testing CompanyService - Update...");
             var updatedEntity = await companyService.UpdateEntityAsync(companyId, updatedCompany);
