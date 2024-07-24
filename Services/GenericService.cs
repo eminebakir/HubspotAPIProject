@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RestSharp;
 using HubspotDemoProject.Models;
+using RestSharp.Authenticators;
 
 namespace HubspotDemoProject
 {
@@ -16,10 +17,13 @@ namespace HubspotDemoProject
 
         public GenericService(IConfiguration configuration, ILogger<GenericService<T>> logger, string entityName)
         {
-            _authToken = configuration["HubSpot:AuthToken"];
-            _client = new RestClient("https://api.hubapi.com");
             _logger = logger;
             _entityName = entityName;
+            _client = new RestClient("https://api.hubapi.com")
+            {
+                Authenticator = new JwtAuthenticator(configuration["HubSpot:AuthToken"])
+            };
+            _client.AddDefaultHeader("Accept", "application/json");
         }
 
         public async Task<ApiResponse<T>> GetAllEntitiesAsync(int limit = 10, bool archived = false)
@@ -27,8 +31,6 @@ namespace HubspotDemoProject
             var request = new RestRequest($"crm/v3/objects/{_entityName}", Method.GET);
             request.AddQueryParameter("limit", limit.ToString());
             request.AddQueryParameter("archived", archived.ToString().ToLower());
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {_authToken}");
 
             try
             {
@@ -58,8 +60,6 @@ namespace HubspotDemoProject
         {
             var request = new RestRequest($"crm/v3/objects/{_entityName}/{entityId}", Method.GET);
             request.AddQueryParameter("archived", archived.ToString().ToLower());
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {_authToken}");
 
             try
             {
@@ -87,8 +87,6 @@ namespace HubspotDemoProject
         public async Task<T> CreateEntityAsync(T entity)
         {
             var request = new RestRequest($"crm/v3/objects/{_entityName}", Method.POST);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {_authToken}");
 
             var jsonSettings = new JsonSerializerSettings
             {
@@ -124,8 +122,6 @@ namespace HubspotDemoProject
         public async Task<bool> DeleteEntityAsync(long entityId)
         {
             var request = new RestRequest($"crm/v3/objects/{_entityName}/{entityId}", Method.DELETE);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {_authToken}");
 
             try
             {
@@ -153,8 +149,6 @@ namespace HubspotDemoProject
         public async Task<T> UpdateEntityAsync(long entityId, T entity)
         {
             var request = new RestRequest($"crm/v3/objects/{_entityName}/{entityId}", Method.PATCH);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {_authToken}");
             var jsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore

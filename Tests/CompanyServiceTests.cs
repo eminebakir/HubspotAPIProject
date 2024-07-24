@@ -2,25 +2,33 @@
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using HubspotDemoProject.Models;
+using Microsoft.Extensions.Logging;
 
 namespace HubspotDemoProject.Test
 {
-    public static class CompanyServiceTests
+    public class CompanyServiceTests
     {
+        private static readonly ILogger<CompanyServiceTests> _logger;
+
+        static CompanyServiceTests()
+        {
+            var serviceProvider = ConfigureServices.GetConfigureServices();
+            _logger = serviceProvider.GetRequiredService<ILogger<CompanyServiceTests>>();
+        }
+
         public static async Task TestGetAllCompanies()
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
             var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
-            Console.WriteLine("Testing CompanyService - GetAll...");
+            _logger.LogInformation("Testing CompanyService - GetAll...");
             var apiResponse = await companyService.GetAllEntitiesAsync();
 
             foreach (var entity in apiResponse.Results)
             {
                 var entityJson = JsonConvert.SerializeObject(entity, Formatting.Indented);
                 var company = JsonConvert.DeserializeObject<Company>(entityJson);
-                Console.Write($"Company ID: {entity.Id} - ");
-                Console.WriteLine($"Company Name: {company.Properties.Name}");
+                _logger.LogInformation($"Company ID: {entity.Id} - Company Name: {company.Properties.Name}");
             }
         }
 
@@ -29,23 +37,24 @@ namespace HubspotDemoProject.Test
             var serviceProvider = ConfigureServices.GetConfigureServices();
             var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
-            Console.WriteLine("Testing CompanyService - GetById...");
+            _logger.LogInformation("Testing CompanyService - GetById...");
             var companyDetail = await companyService.GetEntityByIdAsync(companyId);
 
             var company = JsonConvert.DeserializeObject<Company>(companyDetail);
 
-            Console.WriteLine($"Company Name: {company.Properties.Name}");
+            _logger.LogInformation($"Company Name: {company.Properties.Name}");
         }
+
         public static async Task TestCreateCompany(Company newCompany)
         {
             var serviceProvider = ConfigureServices.GetConfigureServices();
             var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
-            Console.WriteLine("Testing CompanyService - Create...");
+            _logger.LogInformation("Testing CompanyService - Create...");
 
             var createdCompany = await companyService.CreateEntityAsync(newCompany);
-            Console.WriteLine($"Created Company ID: {createdCompany.Id}");
-            Console.WriteLine($"Created Company Name: {createdCompany.Properties.Name}");
+            _logger.LogInformation($"Created Company ID: {createdCompany.Id}");
+            _logger.LogInformation($"Created Company Name: {createdCompany.Properties.Name}");
         }
 
         public static async Task TestDeleteCompany(long companyId)
@@ -53,16 +62,16 @@ namespace HubspotDemoProject.Test
             var serviceProvider = ConfigureServices.GetConfigureServices();
             var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
-            Console.WriteLine("Testing CompanyService - Delete...");
+            _logger.LogInformation("Testing CompanyService - Delete...");
             var result = await companyService.DeleteEntityAsync(companyId);
 
             if (result)
             {
-                Console.WriteLine($"Successfully deleted company with ID: {companyId}");
+                _logger.LogInformation($"Successfully deleted company with ID: {companyId}");
             }
             else
             {
-                Console.WriteLine($"Failed to delete company with ID: {companyId}");
+                _logger.LogError($"Failed to delete company with ID: {companyId}");
             }
         }
 
@@ -71,12 +80,11 @@ namespace HubspotDemoProject.Test
             var serviceProvider = ConfigureServices.GetConfigureServices();
             var companyService = serviceProvider.GetRequiredService<CompanyService>();
 
-            Console.WriteLine("Testing CompanyService - Update...");
+            _logger.LogInformation("Testing CompanyService - Update...");
             var updatedEntity = await companyService.UpdateEntityAsync(companyId, updatedCompany);
 
-            Console.WriteLine($"Successfully updated company with ID: {companyId}");
-            Console.WriteLine($"Updated Company Name: {updatedEntity.Properties.Name}");
+            _logger.LogInformation($"Successfully updated company with ID: {companyId}");
+            _logger.LogInformation($"Updated Company Name: {updatedEntity.Properties.Name}");
         }
-
     }
 }
